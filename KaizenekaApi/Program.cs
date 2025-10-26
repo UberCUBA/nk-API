@@ -7,7 +7,7 @@ using AutoMapper;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure port for Fly.io
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+var port = "8080";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 // Configure Serilog
