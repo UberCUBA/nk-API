@@ -6,9 +6,7 @@ using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure port for Fly.io
-var port = "8080";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+// Configure port for Fly.io - ASP.NET Core will use HTTP_PORTS environment variable set by Fly.io
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
