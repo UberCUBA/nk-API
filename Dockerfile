@@ -1,4 +1,4 @@
-# Use the official .NET 9 SDK image to build the app
+# Use the official .NET 9 SDK image to build and publish the app
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
@@ -9,22 +9,18 @@ RUN dotnet restore "KaizenekaApi.csproj"
 # Copy the rest of the source code
 COPY . .
 
-# Build the application
-RUN rm -rf /app/build && dotnet build "KaizenekaApi.csproj" -c Release -o /app/build
-
-# Publish the application
-FROM build AS publish
-RUN dotnet publish "KaizenekaApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# Publish the application (this handles build + publish in one step)
+RUN dotnet publish "KaizenekaApi.csproj" -c Release -o /app/publish --no-restore /p:UseAppHost=false
 
 # Use the official .NET 9 runtime image to run the app
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 
 # Copy the published app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 
-# Expose the port the app runs on (Railway will assign a dynamic port)
-EXPOSE 10000
+# Expose the port the app runs on
+EXPOSE 8080
 
 # Set the entry point
 ENTRYPOINT ["dotnet", "KaizenekaApi.dll"]
