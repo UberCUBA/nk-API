@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  kaizeneka-api:
+    build:
+      context: ./KaizenekaApi
+      dockerfile: Dockerfile
+    ports:
+      - "5102:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
