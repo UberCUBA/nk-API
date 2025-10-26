@@ -10,7 +10,7 @@ RUN dotnet restore "KaizenekaApi.csproj"
 COPY . .
 
 # Build the application
-RUN dotnet build "KaizenekaApi.csproj" -c Release -o /app/build
+RUN rm -rf /app/build && dotnet build "KaizenekaApi.csproj" -c Release -o /app/build
 
 # Publish the application
 FROM build AS publish
